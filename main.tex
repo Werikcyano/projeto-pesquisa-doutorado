@@ -1,0 +1,144 @@
+\documentclass[12pt,a4paper]{article}
+
+% Configurações de pacotes
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage{times} % Times New Roman
+\usepackage{setspace} % Controle de espaçamento
+\usepackage{geometry} % Margens
+\usepackage{titlesec} % Formatação de títulos
+\usepackage{titling} % Controle da capa
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{cite} % Citações ABNT
+\usepackage{url}
+\usepackage{hyperref}
+
+% Configurações de página
+\geometry{
+    a4paper,
+    left=3cm,
+    top=3cm,
+    right=2cm,
+    bottom=2cm
+}
+
+% Espaçamento entre linhas: 1.5
+\onehalfspacing
+
+% Configuração de títulos
+\titleformat{\section}
+    {\normalfont\fontsize{12}{18}\bfseries}
+    {\thesection}{1em}{}
+    
+\titleformat{\subsection}
+    {\normalfont\fontsize{12}{18}\bfseries}
+    {\thesubsection}{1em}{}
+
+% Remover numeração de páginas na capa
+\pagenumbering{gobble}
+
+% ============================================
+% CAPA
+% ============================================
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    
+    {\Large\bfseries PROJETO DE PESQUISA}\\[1cm]
+    
+    \vspace{2cm}
+    
+    {\Large\bfseries TÍTULO DO PROJETO}\\[0.5cm]
+    {\large Subtítulo do Projeto (se houver)}\\[2cm]
+    
+    \vspace{3cm}
+    
+    \begin{flushleft}
+    \textbf{Candidato:} Nome do Candidato\\[0.5cm]
+    \textbf{Orientador:} Prof. Dr. Leonardo da Cunha Brito\\[0.5cm]
+    \end{flushleft}
+    
+    \vfill
+    
+    {\large PROGRAMA DE PÓS-GRADUAÇÃO EM\\ENGENHARIA ELÉTRICA E DE COMPUTAÇÃO}\\[0.5cm]
+    {\large Área: Aprendizagem de Máquina Explicável e Otimização em Engenharia}\\[0.5cm]
+    
+    \vspace{1cm}
+    
+    {\large Ano}
+    
+\end{titlepage}
+
+% Nova página após a capa
+\newpage
+
+% A partir daqui, numeração de páginas e sem identificação
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% ============================================
+% INTRODUÇÃO E JUSTIFICATIVA
+% ============================================
+\section{Introdução e Justificativa}
+
+% Conteúdo da introdução será inserido aqui
+
+% ============================================
+% OBJETIVOS
+% ============================================
+\section{Objetivos}
+
+\subsection{Objetivo Geral}
+
+% Objetivo geral será inserido aqui
+
+\subsection{Objetivos Específicos}
+
+\begin{itemize}
+    \item Objetivo específico 1
+    \item Objetivo específico 2
+    \item Objetivo específico 3
+    % Adicionar mais objetivos conforme necessário
+\end{itemize}
+
+% ============================================
+% REFERENCIAL TEÓRICO
+% ============================================
+\section{Referencial Teórico}
+
+% Conteúdo do referencial teórico será inserido aqui
+
+% ============================================
+% METODOLOGIA
+% ============================================
+\section{Metodologia}
+
+% Conteúdo da metodologia será inserido aqui
+
+% ============================================
+% CRONOGRAMA
+% ============================================
+\section{Cronograma}
+
+% Cronograma será inserido aqui
+% Sugestão: usar tabela ou ambiente itemize
+
+% ============================================
+% REFERÊNCIAS
+% ============================================
+\section{Referências}
+
+% Referências serão inseridas aqui usando \cite{} e ambiente thebibliography
+% ou arquivo .bib com \bibliography{}
+
+\begin{thebibliography}{99}
+    % Exemplo de referência
+    % \bibitem{ref1} Autor, A. (Ano). \textit{Título do Trabalho}. Local: Editora.
+\end{thebibliography}
+
+\end{document}
