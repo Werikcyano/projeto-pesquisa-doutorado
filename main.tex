@@ -181,7 +181,7 @@ A fundamentação teórica desta pesquisa perpassa pela convergência entre o pr
 
 \subsection{Evolução dos Modelos de Linguagem e Raciocínio Estruturado}
 
-O desenvolvimento da arquitetura Transformer consolidou um marco na computação ao introduzir mecanismos de atenção que permitem o processamento paralelo de sequências textuais \citep{204e3073870fae3d05bcbc2f6a8e263d9b72e776}. Diferente das arquiteturas recorrentes precedentes, o Transformer baseia-se no mecanismo de \textit{Scaled Dot-Product Attention}, definido matematicamente por
+O desenvolvimento da arquitetura Transformer consolidou um marco na computação ao introduzir mecanismos de atenção que permitem o processamento paralelo de sequências textuais (Figura \ref{fig:transformer_block}) \citep{204e3073870fae3d05bcbc2f6a8e263d9b72e776}. Diferente das arquiteturas recorrentes precedentes, o Transformer baseia-se no mecanismo de \textit{Scaled Dot-Product Attention}, definido matematicamente por
 \begin{equation}
 \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V,
 \end{equation}
@@ -190,38 +190,123 @@ onde $Q$, $K$ e $V$ representam as matrizes de \textit{queries}, \textit{keys} e
 
 \begin{figure}[ht]
     \centering
-    \begin{tikzpicture}[
-        node distance=1.5cm,
-        auto,
-        every node/.style={font=\scriptsize},
-        layer/.style={rectangle, draw, fill=blue!5, text width=2.5cm, align=center, minimum height=0.8cm, rounded corners},
-        arrow/.style={-latex', thick}
-    ]
-        % Fluxo Simplificado Transformer
-        \node (input) {Input Embedding};
-        \node[layer, above=0.5cm of input] (att) {Multi-Head Attn};
-        \node[layer, above=0.5cm of att] (norm) {Add \& Norm};
-        \node[layer, above=0.5cm of norm] (ffn) {Feed Forward};
-        \node[layer, above=0.5cm of ffn] (norm2) {Add \& Norm};
-        \node[above=0.5cm of norm2] (output) {Output Probabilities};
+    % Define styles separately to keep code clean
+    \tikzset{
+        block/.style={rectangle, draw, rounded corners, align=center, minimum height=0.8cm, minimum width=2.5cm, font=\footnotesize},
+        io/.style={block, fill=red!15}, % Input/Output/Embedding - Pinkish
+        attn/.style={block, fill=orange!15}, % Attention - Orangeish
+        ff/.style={block, fill=cyan!15}, % Feed Forward - Blueish
+        norm/.style={block, fill=yellow!20}, % Add & Norm - Yellowish
+        linear/.style={block, fill=gray!15}, % Linear - Gray
+        softmax/.style={block, fill=green!15}, % Softmax - Green
+        pe/.style={circle, draw, fill=white, inner sep=0pt, minimum size=0.6cm}, % Positional Encoding
+        plus/.style={circle, draw, inner sep=0pt, minimum size=0.4cm, path picture={\draw[black] (path picture bounding box.south) -- (path picture bounding box.north) (path picture bounding box.west) -- (path picture bounding box.east);}}, % Plus sign
+        container/.style={draw=gray, rounded corners, thick, dashed},
+        arrow/.style={-latex, thick}
+    }
+    
+    \begin{tikzpicture}[node distance=0.6cm, auto]
         
-        % Conexões
-        \draw[arrow] (input) -- (att);
-        \draw[arrow] (att) -- (norm);
-        \draw[arrow] (norm) -- (ffn);
-        \draw[arrow] (ffn) -- (norm2);
-        \draw[arrow] (norm2) -- (output);
+        % ===========================
+        % ENCODER (Left Side)
+        % ===========================
         
-        % Residual connections (simbólico)
-        \draw[arrow, dashed, ->] (input.west) to[bend left=45] (norm.west);
-        \draw[arrow, dashed, ->] (norm.west) to[bend left=45] (norm2.west);
-
-        \node[right=0.5cm of ffn, text width=4cm, align=left] {
-            \textbf{Mecanismo de Atenção}:\\
-            Permite o processamento paralelo e captura de dependências de longo alcance.
-        };
+        \node (inputs) {Entradas};
+        \node[io, above=0.3cm of inputs] (in_emb) {Embedding de\\Entrada};
+        \node[plus, above=0.3cm of in_emb] (plus1) {};
+        \node[pe, left=0.5cm of plus1] (pe1) {$\sim$};
+        \node[left=0.1cm of pe1, font=\scriptsize, align=right] {Codificação\\Posicional};
+        
+        % Encoder Stack Container Start
+        \node[coordinate, above=0.4cm of plus1] (enc_start) {};
+        
+        \node[attn, above=0.5cm of plus1] (mha1) {Atenção\\Multi-Cabeça};
+        \node[norm, above=0.2cm of mha1] (norm1) {Soma \& Norm};
+        
+        \node[ff, above=0.4cm of norm1] (ff1) {Feed\\Forward};
+        \node[norm, above=0.2cm of ff1] (norm2) {Soma \& Norm};
+        
+        % Box around stacks
+        \node[container, fit=(mha1) (norm1) (ff1) (norm2), inner sep=0.3cm] (enc_box) {};
+        \node[left=0.1cm of enc_box, font=\large] {$N\times$};
+        
+        % Connections Encoder
+        \draw[arrow] (inputs) -- (in_emb);
+        \draw[arrow] (in_emb) -- (plus1);
+        \draw[arrow] (pe1) -- (plus1);
+        \draw[arrow] (plus1) -- (mha1);
+        \draw[arrow] (mha1) -- (norm1);
+        \draw[arrow] (norm1) -- (ff1);
+        \draw[arrow] (ff1) -- (norm2);
+        
+        % Residuals Encoder
+        % (mha1 input) -> (norm1)
+        \draw[arrow] (plus1.north) ++(0,0.15) -- ++(-1.6,0) |- (norm1.west);
+        % (norm1 output) -> (norm2)
+        \draw[arrow] (norm1.north) ++(0,0.15) -- ++(-1.6,0) |- (norm2.west);
+        
+        
+        % ===========================
+        % DECODER (Right Side)
+        % ===========================
+        
+        \node[right=2.5cm of inputs] (outputs) {Saídas\\(Deslocadas à direita)};
+        \node[io, above=0.3cm of outputs] (out_emb) {Embedding de\\Saída};
+        \node[plus, above=0.3cm of out_emb] (plus2) {};
+        \node[pe, right=0.5cm of plus2] (pe2) {$\sim$};
+        \node[right=0.1cm of pe2, font=\scriptsize, align=left] {Codificação\\Posicional};
+        
+        \node[attn, above=0.5cm of plus2] (mmha) {Atenção Multi-Cabeça\\Mascarada};
+        \node[norm, above=0.2cm of mmha] (norm3) {Soma \& Norm};
+        
+        \node[attn, above=0.4cm of norm3] (mha2) {Atenção\\Multi-Cabeça};
+        \node[norm, above=0.2cm of mha2] (norm4) {Soma \& Norm};
+        
+        \node[ff, above=0.4cm of norm4] (ff2) {Feed\\Forward};
+        \node[norm, above=0.2cm of ff2] (norm5) {Soma \& Norm};
+        
+        % Box around decoder stack
+        \node[container, fit=(mmha) (norm3) (mha2) (norm4) (ff2) (norm5), inner sep=0.3cm] (dec_box) {};
+        \node[right=0.1cm of dec_box, font=\large] {$N\times$};
+        
+        % Output Head
+        \node[linear, above=0.4cm of norm5] (linear) {Linear};
+        \node[softmax, above=0.2cm of linear] (softmax) {Softmax};
+        \node[above=0.3cm of softmax, align=center] (out_prob) {Probabilidades\\de Saída};
+        
+        % Connections Decoder
+        \draw[arrow] (outputs) -- (out_emb);
+        \draw[arrow] (out_emb) -- (plus2);
+        \draw[arrow] (pe2) -- (plus2);
+        \draw[arrow] (plus2) -- (mmha);
+        \draw[arrow] (mmha) -- (norm3);
+        \draw[arrow] (norm3) -- (mha2);
+        \draw[arrow] (mha2) -- (norm4);
+        \draw[arrow] (norm4) -- (ff2);
+        \draw[arrow] (ff2) -- (norm5);
+        \draw[arrow] (norm5) -- (linear);
+        \draw[arrow] (linear) -- (softmax);
+        \draw[arrow] (softmax) -- (out_prob);
+        
+        % Residuals Decoder
+        \draw[arrow] (plus2.north) ++(0,0.15) -- ++(1.6,0) |- (norm3.east);
+        \draw[arrow] (norm3.north) ++(0,0.15) -- ++(1.6,0) |- (norm4.east);
+        \draw[arrow] (norm4.north) ++(0,0.15) -- ++(1.6,0) |- (norm5.east);
+        
+        % Cross Attention Connection (Encoder -> Decoder)
+        % From Encoder Norm2 to Decoder MHA2
+        \draw[arrow] (norm2.north) -- ++(0,0.2) -| (mha2.north); % This might look weird, standard is from top of encoder stack to side of MHA block
+        % Let's adjustment routing:
+        % Typically it goes from the output of the Encoder Stack (norm2) into the Multi-Head Attention of the Decoder (mha2).
+        % Specifically into the Keys and Values. 
+        % I'll draw a line from norm2 splitting to mha2.
+        
+        \draw[arrow] (norm2.east) -- ++(0.5,0) |- ([yshift=-0.2cm]mha2.west);
+        % Also typically it enters from "below" or "side". The layout here has MHA2 above Norm3.
+        % The standard diagram has the arrows coming from the side.
+        
     \end{tikzpicture}
-    \caption{Representação simplificada de um bloco Transformer, destacando o mecanismo de atenção que permite o processamento paralelo eficiente, base para modelos como GPT.}
+    \caption{Arquitetura do modelo Transformer. O modelo utiliza pilhas de camadas de atenção e feed-forward tanto no codificador (esquerda) quanto no decodificador (direita). Traduzido de \citet{204e3073870fae3d05bcbc2f6a8e263d9b72e776}.}
     \label{fig:transformer_block}
 \end{figure}
 
