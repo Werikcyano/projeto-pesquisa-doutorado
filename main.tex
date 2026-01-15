@@ -18,7 +18,7 @@
 \usepackage{tabularx} % Para tabelas melhores
 \usepackage{booktabs} % Para linhas de tabelas profissionais
 \usepackage{tikz} % Para esquemáticos se necessário
-\usetikzlibrary{shapes,arrows,positioning}
+\usetikzlibrary{shapes,arrows,positioning,fit,calc}
 
 % Configurações de página
 \geometry{
@@ -201,7 +201,7 @@ onde $Q$, $K$ e $V$ representam as matrizes de \textit{queries}, \textit{keys} e
         softmax/.style={block, fill=green!15, minimum height=0.6cm}, 
         pe/.style={circle, draw, fill=white, inner sep=0pt, minimum size=0.6cm},
         plus/.style={circle, draw, inner sep=0pt, minimum size=0.4cm, path picture={\draw[black] (path picture bounding box.south) -- (path picture bounding box.north) (path picture bounding box.west) -- (path picture bounding box.east);}},
-        container/.style={draw=gray, rounded corners, thick, dashed},
+        container/.style={draw=gray!80, rounded corners, thick}, % Solid container, visible
         arrow/.style={-latex, thick}
     }
     
