@@ -100,9 +100,48 @@ Contudo, a aplicação dessas tecnologias em ambientes de engenharia crítica pe
 
 A ausência de mecanismos robustos de verificação que atuem em tempo de execução representa uma lacuna crítica. Sistemas que dependem exclusivamente de \textit{prompting} estático falham em capturar as sutilezas das normas de segurança e restrições físicas de sistemas elétricos. Existe, portanto, uma necessidade premente de arquiteturas que não apenas automatizem a modelagem, mas que incorporem processos de crítica e correção baseados em princípios de engenharia, garantindo a confiabilidade indispensável em setores de infraestrutura crítica.
 
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}[node distance=1.5cm, auto,
+        every node/.style={font=\footnotesize},
+        block/.style={rectangle, draw, rounded corners, fill=blue!10, text width=2.5cm, align=center, minimum height=1.2cm},
+        human/.style={ellipse, draw, fill=green!10, text width=2cm, align=center},
+        cloud/.style={cloud, draw, fill=gray!10, aspect=2},
+        line/.style={draw, -latex', thick}]
+
+        % Cenário Tradicional
+        \node[human] (eng) {Engenheiro Especialista};
+        \node[block, right=1cm of eng] (manual) {Formulação Manual (Matemática/Código)};
+        \node[block, right=1cm of manual] (solver) {Solver de Otimização};
+        
+        % Labels
+        \node[above=0.2cm of manual, font=\bfseries] {Abordagem Tradicional};
+        
+        \path[line] (eng) -- node[above] {Conhecimento} (manual);
+        \path[line] (manual) -- (solver);
+        \path[line, dashed] (solver) -- ++(0,-1) -| node[pos=0.25, below] {Erro/Feedback Manual} (eng);
+
+        % Cenário Proposto (human-in-the-loop)
+        \node[human, below=2.5cm of eng] (eng2) {Engenheiro Especialista};
+        \node[block, right=1cm of eng2, fill=orange!10] (mas) {\textbf{Agentes Colaborativos} (Formulador + Crítico)};
+        \node[block, right=1cm of mas] (solver2) {Solver de Otimização};
+
+        % Labels
+        \node[above=0.2cm of mas, font=\bfseries] {Abordagem Proposta};
+
+        \path[line] (eng2) -- node[above] {Linguagem Natural} (mas);
+        \path[line] (mas) -- node[above] {Modelo} (solver2);
+        \path[line] (solver2) -- node[above] {Viabilidade} (mas);
+        \path[line, dashed] (mas) -- node[above] {Refinamento} (eng2);
+
+    \end{tikzpicture}
+    \caption{Comparativo conceitual: (Superior) O fluxo tradicional exige que o engenheiro traduza manualmente requisitos em formalismo matemático. (Inferior) A abordagem proposta intercala agentes inteligentes que traduzem linguagem natural e validam tecnicamente o modelo antes da execução.}
+    \label{fig:comparativo_abordagens}
+\end{figure}
+
 \subsection{A Abordagem Proposta: Agentes Cognitivos Colaborativos}
 
-Esta proposta de doutorado busca superar tais limitações por meio do desenvolvimento de uma arquitetura baseada em Sistemas Multi-Agentes (MAS), fundamentada na colaboração entre agentes cognitivos especializados e o engenheiro humano. Propõe-se um fluxo de refinamento iterativo sustentado por um Agente Formulador e um Agente Crítico. 
+Esta proposta de doutorado busca superar tais limitações por meio do desenvolvimento de uma arquitetura baseada em Sistemas Multi-Agentes (MAS), fundamentada na colaboração entre agentes cognitivos especializados e o engenheiro humano. Propõe-se um fluxo de refinamento iterativo sustentado por um Agente Formulador e um Agente Crítico, conforme ilustrado na Figura \ref{fig:comparativo_abordagens}. O diagrama evidencia a mudança de paradigma em relação ao método tradicional: ao invés de atuar isoladamente na tradução matemática, o engenheiro supervisiona um sistema inteligente que realiza a formulação e a verificação prévia, reduzindo a carga cognitiva e o risco de erros de modelagem. 
 
 Diferente de abordagens unilaterais, o sistema operará como uma biblioteca de experiências que se aprimora continuamente a partir do \textit{feedback} de solvers e da interação humana \citep{6f99bcc23e8308650dae64970980bdeae2a4f9d2}. Ao integrar metodologias de raciocínio estruturado \citep{1b6e810ce0afd0dd093f789d2b2742d047e316d5} e processos de adaptação corretiva com intervenção mínima \citep{074299c38fe2f099d970d92eafc592a6706035c6}, o arcabouço proposto visa transformar a modelagem matemática em um diálogo colaborativo, capaz de explicitar e formalizar o conhecimento tácito essencial para a engenharia de energia.
 
