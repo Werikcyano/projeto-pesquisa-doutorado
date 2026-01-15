@@ -302,15 +302,16 @@ A aceitação de sistemas baseados em inteligência artificial no ambiente indus
         \node[below=1.5cm of llm] (interaction) {\textbf{Interaction}};
         \draw[<->, thick] (llm) -- (interaction);
 
-        % Backend Tools
-        \node[backend, below=0.5cm of interaction] (funcs) {\textbf{Predefined Functions}\\Restore Feasibility\\Analyze Sensitivity};
+        % Backend Label positioned clearly below Interaction
+        \node[below=0.8cm of interaction, font=\bfseries\small] (lbl_backend) {(b) Backend System};
+
+        % Backend Tools positioned relative to the Label
+        \node[backend, below=0.5cm of lbl_backend] (funcs) {\textbf{Predefined Functions}\\Restore Feasibility\\Analyze Sensitivity};
         \node[backend, below=0.2cm of funcs] (codegen) {\textbf{Code Generation}\\Counterfactual Expl.\\Unexpected Failure};
         
         \node[backend, left=0.5cm of funcs, text width=1.8cm, minimum height=2.5cm] (software) {\textbf{Modeling Software}\\(Model Code)};
         \node[backend, right=0.5cm of funcs, text width=1.8cm, minimum height=2.5cm] (solver) {\textbf{Optimization Solver}\\(Description)};
         
-        \node[yshift=0.5cm, font=\bfseries\small] at (funcs.north) {(b) Backend System};
-
     \end{tikzpicture}
     \caption{Visão geral do OptiChat. Entradas em azul (consultas), saídas em verde (explicações) e ferramentas de backend em cinza. Adaptado de \citet{04eb39fb141f058081036a3c65610c59cd781792}.}
     \label{fig:optichat_overview}
