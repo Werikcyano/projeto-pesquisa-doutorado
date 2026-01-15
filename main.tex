@@ -331,13 +331,23 @@ A metodologia proposta para a execução desta pesquisa estrutura-se em fases in
 
 \subsection{Arquitetura do Sistema de Agentes Colaborativos}
 
-O arcabouço computacional será composto por dois agentes principais que interagem em um ambiente de refinamento iterativo. O Agente Formulador terá a responsabilidade de interpretar as descrições em linguagem natural fornecidas pelo usuário e convertê-las em modelos de otimização estruturados. Para tal, serão utilizadas técnicas de engenharia de prompt avançadas para garantir a correta definição de variáveis de decisão, funções objetivo e restrições.
+O arcabouço computacional proposto fundamenta-se em uma arquitetura de Sistemas Multi-Agentes (MAS), projetada para operar em um ciclo fechado de formulação, crítica e autoajuste. A estrutura central é composta por dois agentes cognitivos principais que interagem entre si e com ferramentas externas de otimização, conforme detalhado a seguir:
 
-O Agente Crítico atuará como um mecanismo de verificação semântica. Esse agente será equipado com uma base de conhecimento técnico específica do setor elétrico e ferramentas de execução de código para validar a sintaxe e a lógica do modelo proposto. Caso sejam detectadas inconsistências ou falhas de viabilidade reportadas pelos solvers de otimização, o Agente Crítico gerará relatórios de erro em linguagem natural para que o Agente Formulador realize os ajustes necessários.
+\begin{itemize}
+    \item \textbf{Agente Formulador (AF):} Este agente, baseado em modelos de linguagem de última geração, tem a função primordial de realizar o mapeamento semântico entre os requisitos expressos em linguagem natural e a sintaxe de linguagens de modelagem algébrica. Para mitigar a ocorrência de erros lógicos, o AF utiliza a técnica de \textit{Chain of Thought} (CoT) \citep{1b6e810ce0afd0dd093f789d2b2742d047e316d5}, permitindo que o modelo explicite os passos intermediários da dedução matemática antes da geração do código final.
+    
+    \item \textbf{Agente Crítico (AC):} Atuando como um mecanismo de supervisão, o AC avalia a consistência técnica das propostas geradas pelo AF. Inspirado no sistema \textit{OptiMind} \citep{92b39ce69cc1ee59aff8a92f30557728edc6ea32}, este agente integra retroalimentação direta de solvers de otimização (e.g., Gurobi) para identificar falhas de sintaxe e inviabilidade de modelos. Adicionalmente, o AC emprega métodos de verificação baseados em teoria dos grafos, conforme o arcabouço \textit{ORGEval} \citep{3eee1fe6acf9760efa215130617a4f13d32b4962}, para assegurar que a estrutura matemática gerada seja isomorfa às propriedades físicas e operacionais do sistema em estudo.
+\end{itemize}
+
+A sinergia entre esses agentes é mediada por uma \textbf{Biblioteca de Experiência Autogerida}, baseada na arquitetura \textit{AlphaOPT} \citep{6f99bcc23e8308650dae64970980bdeae2a4f9d2}. Este componente armazena taxonomias de erros e condições de falha observadas em iterações passadas, permitindo que o sistema realize uma evolução de biblioteca (\textit{Library Evolution}) para evitar a reincidência de alucinações semânticas em domínios de engenharia de energia. Esse mecanismo de memória é essencial para a robustez da solução, transformando falhas pontuais em aprendizado estruturado para o refinamento iterativo do modelo.
 
 \subsection{Fluxo de Interação Human-in-the-Loop}
 
-A interação com o especialista humano ocorrerá por meio de um módulo de aprendizado ativo. Quando o sistema identificar ambiguidades que impeçam a formalização precisa do problema, interpelará o usuário com questões estruturadas para elucidar o conhecimento tácito. O processo iterativo de crítica e formulação será mantido até que um modelo viável e validado seja obtido. A Figura \ref{fig:fluxo_agentes} ilustra o fluxo de informações proposto para a arquitetura do sistema.
+A interação entre o arcabouço multi-agente e o engenheiro de domínio processa-se por meio de um fluxo dinâmico de \textit{Human-in-the-loop}, fundamentado no princípio da adaptação corretiva com intervenção mínima \citep{074299c38fe2f099d970d92eafc592a6706035c6}. Este módulo é projetado para atuar como uma interface de diálogo inteligente, superando a rigidez dos sistemas de \textit{prompting} convencionais.
+
+O processo inicia-se com a submissão de requisitos funcionais em linguagem natural. Caso o sistema identifique ambiguidades semânticas ou lacunas de informação que impeçam a formulação rigorosa, o Agente Crítico, em conjunto com um módulo de \textit{Active Learning}, interpele o usuário por meio de perguntas estratégicas. Este mecanismo de elucidação foca na extração de restrições implícitas e objetivos tácitos, transformando o processo de modelagem em uma cocriação assistida.
+
+Inspirado na arquitetura do \textit{OptiChat} \citep{04eb39fb141f058081036a3c65610c59cd781792}, o sistema provê ao usuário ferramentas de diagnóstico de inviabilidade e análise de sensibilidade em linguagem natural. Quando o \textit{solver} retorna um resultado inesperado ou uma condição de \textit{infeasible}, o sistema traduz as causas técnicas (e.g., violação de limites de carregamento de linhas) em explicações qualitativas, permitindo que o engenheiro ajuste os parâmetros ou relaxe restrições de forma informada. Além disso, o fluxo contempla a geração de explicações contrafatuais (e.g., "o que ocorreria com o custo se o limite de geração solar fosse elevado em 10\%?"), consolidando a transparência indispensável para a tomada de decisão em sistemas críticos.
 
 \begin{figure}[ht]
     \centering
@@ -364,7 +374,17 @@ A interação com o especialista humano ocorrerá por meio de um módulo de apre
 
 \subsection{Cenário de Aplicação e Validação Experimental}
 
-A validação do sistema proposto será realizada por meio de estudos de caso aplicados a problemas reais do setor elétrico brasileiro, como o planejamento da expansão de sistemas de transmissão ou a otimização do despacho de geração renovável. Serão utilizadas ferramentas de modelagem como Pyomo e solvers comerciais de alto desempenho, tais como Gurobi e CPLEX. O desempenho do sistema será avaliado com base na taxa de sucesso na geração de modelos viáveis, no tempo de convergência para o modelo final e na percepção de transparência e confiabilidade reportada por especialistas da área.
+A validação do arcabouço proposto será conduzida em cenários realistas da engenharia de energia elétrica, com foco em problemas de alta complexidade e impacto sistêmico. Serão selecionados dois estudos de caso principais: o planejamento da expansão de sistemas de transmissão sob incertezas de demanda e a otimização do despacho de geração renovável intermitente. Tais problemas exigem a manipulação de grandes volumes de restrições técnicas (e.g., leis de Kirchhoff, limites de estabilidade térmica) que servem de base ideal para testar a precisão semântica dos agentes cognitivos.
+
+Para a implementação dos modelos, serão utilizadas ferramentas de modelagem algébrica de código aberto, especificamente o ecossistema Pyomo em ambiente Python, integrando solvers comerciais de alto desempenho como Gurobi e CPLEX. A avaliação da eficácia do sistema basear-se-á em métricas rigorosas de desempenho e confiabilidade:
+
+\begin{itemize}
+    \item \textbf{Taxa de Viabilidade Semântica:} Medida pela proporção de modelos gerados que são sintaticamente corretos e fisicamente consistentes com os requisitos de engenharia.
+    \item \textbf{Equivalência Estrutural:} Utilização do arcabouço \textit{ORGEval} \citep{3eee1fe6acf9760efa215130617a4f13d32b4962} para verificar, via isomorfismo de grafos, se a formulação gerada pelo LLM é matematicamente equivalente ao modelo de referência estabelecido por especialistas humanos.
+    \item \textbf{Eficiência de Modelagem:} Comparação temporal entre o processo de formulação assistida por agentes e o método de modelagem manual convencional.
+\end{itemize}
+
+Complementarmente, será realizada uma análise qualitativa da explicabilidade das soluções, avaliando a capacidade do sistema em fornecer justificativas técnicas que atendam aos requisitos de transparência exigidos por operadores de sistemas elétricos.
 
 % ============================================
 % CRONOGRAMA
