@@ -334,7 +334,20 @@ A metodologia proposta para a execução desta pesquisa estrutura-se em fases in
 O arcabouço computacional proposto fundamenta-se em uma arquitetura de Sistemas Multi-Agentes (MAS), projetada para operar em um ciclo fechado de formulação, crítica e autoajuste. A estrutura central é composta por dois agentes cognitivos principais que interagem entre si e com ferramentas externas de otimização, conforme detalhado a seguir:
 
 \begin{itemize}
-    \item \textbf{Agente Formulador (AF):} Este agente, baseado em modelos de linguagem de última geração, tem a função primordial de realizar o mapeamento semântico entre os requisitos expressos em linguagem natural e a sintaxe de linguagens de modelagem algébrica. Para mitigar a ocorrência de erros lógicos, o AF utiliza a técnica de \textit{Chain of Thought} (CoT) \citep{1b6e810ce0afd0dd093f789d2b2742d047e316d5}, permitindo que o modelo explicite os passos intermediários da dedução matemática antes da geração do código final.
+    \item \textbf{Agente Formulador (AF):} Este agente, baseado em modelos de linguagem de última geração, tem a função primordial de realizar o mapeamento semântico entre os requisitos expressos em linguagem natural e a sintaxe de linguagens de modelagem algébrica. O objetivo é traduzir a intenção do usuário para uma formulação matemática padrão na forma:
+    
+    \begin{equation}
+        \begin{aligned}
+            & \underset{x}{\text{minimizar}}
+            & & f(x) \\
+            & \text{sujeito a}
+            & & g_i(x) \leq 0, \quad i = 1, \dots, m \\
+            & & & h_j(x) = 0, \quad j = 1, \dots, p \\
+            & & & x \in \mathcal{X}
+        \end{aligned}
+    \end{equation}
+
+    Para mitigar a ocorrência de erros lógicos na definição de $f(x)$, $g(x)$ e $h(x)$, o AF utiliza a técnica de \textit{Chain of Thought} (CoT) \citep{1b6e810ce0afd0dd093f789d2b2742d047e316d5}, permitindo que o modelo explicite os passos intermediários da dedução matemática antes da geração do código final.
     
     \item \textbf{Agente Crítico (AC):} Atuando como um mecanismo de supervisão, o AC avalia a consistência técnica das propostas geradas pelo AF. Inspirado no sistema \textit{OptiMind} \citep{92b39ce69cc1ee59aff8a92f30557728edc6ea32}, este agente integra retroalimentação direta de solvers de otimização (e.g., Gurobi) para identificar falhas de sintaxe e inviabilidade de modelos. Adicionalmente, o AC emprega métodos de verificação baseados em teoria dos grafos, conforme o arcabouço \textit{ORGEval} \citep{3eee1fe6acf9760efa215130617a4f13d32b4962}, para assegurar que a estrutura matemática gerada seja isomorfa às propriedades físicas e operacionais do sistema em estudo.
 \end{itemize}
@@ -399,14 +412,15 @@ O projeto de pesquisa será desenvolvido ao longo de um período de 48 meses, or
 \begin{tabularx}{\textwidth}{|X|c|c|c|c|c|c|c|c|}
 \hline
 \textbf{Atividades / Semestre} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} \\ \hline
-Créditos em Disciplinas e Revisão Bibliográfica & X & X & X & & & & & \\ \hline
-Concepção e Projeto da Arquitetura Multi-Agente & & X & X & & & & & \\ \hline
-Desenvolvimento dos Agentes Formulador e Crítico & & & X & X & X & & & \\ \hline
-Integração de Módulos de Aprendizado Ativo & & & & X & X & & & \\ \hline
+Créditos e Revisão Bibliográfica Sistemática & X & X & & & & & & \\ \hline
+Concepção da Arquitetura Multi-Agente & & X & X & & & & & \\ \hline
+Desenv. Agente Formulador e Crítico (Prompt Engineering) & & & X & X & & & & \\ \hline
+Implementação do Módulo Active Learning e Interface & & & & X & X & & & \\ \hline
+Integração com Solvers e Biblioteca de Experiência & & & & & X & X & & \\ \hline
 Exame de Qualificação & & & & & X & & & \\ \hline
-Realização de Experimentos e Validação & & & & & X & X & X & \\ \hline
-Análise de Resultados e Publicações & & & & X & X & X & X & \\ \hline
-Redação e Defesa da Tese & & & & & & & X & X \\ \hline
+Estudos de Caso: Expansão e Despacho (Validação) & & & & & & X & X & \\ \hline
+Análise Comparativa (ORGEval) e Escrita de Artigos & & & & & & X & X & X \\ \hline
+Redação Final e Defesa da Tese & & & & & & & & X \\ \hline
 \end{tabularx}
 \caption{Cronograma de execução das atividades de doutorado previstas para o período 2026-2030.}
 \end{table}
