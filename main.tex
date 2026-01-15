@@ -80,8 +80,17 @@
 % ============================================
 \section{Introdução e Justificativa}
 
-% Conteúdo da introdução será inserido aqui
+A tomada de decisão em engenharia, especialmente em setores críticos como o de energia, envolve a resolução de problemas de otimização complexos sob incerteza. Tradicionalmente, a formulação desses modelos matemáticos exige um profundo conhecimento técnico, criando uma barreira entre os especialistas de domínio (engenheiros) e as ferramentas de otimização. Além disso, uma parte significativa do conhecimento necessário para uma modelagem robusta é tácita — regras não escritas, intuições baseadas em experiência e restrições operacionais sutis que raramente são capturadas em especificações iniciais.
 
+O advento dos Modelos de Linguagem de Grande Escala (LLMs) introduziu novas possibilidades para a automação dessa modelagem. Trabalhos recentes, como o \textit{OptiGuide} \cite{bbe2f0a73e8bac09457ea17d3b6276dc97f170df}, demonstram como LLMs podem atuar como intérpretes entre a linguagem natural e solvers de otimização, aumentando a interpretabilidade e acessibilidade. Da mesma forma, Yang et al. \cite{f8a2dca1e8fe56e698984c077f7ff58d8ca867e9} exploram o uso de LLMs diretamente como otimizadores. No entanto, a aplicação direta dessas ferramentas em cenários de engenharia crítica enfrenta desafios substanciais: a tendência dos modelos a alucinações, a geração de código sintaticamente correto mas semanticamente inviável, e a dificuldade em validar o modelo gerado contra normas de segurança estritas.
+
+A presente proposta de doutorado busca mitigar essas limitações através de uma abordagem \textit{Human-in-the-loop} suportada por um sistema de Agentes Cognitivos Colaborativos. Propõe-se uma arquitetura onde um agente "Formulador" é responsável pela criação inicial do modelo, enquanto um agente "Crítico" — equipado com ferramentas de verificação e bases de conhecimento de engenharia — atua para validar, refutar e refinar iterativamente as propostas.
+
+A justificativa para esta pesquisa reside na necessidade premente de ferramentas que não apenas automatizem a criação de modelos, mas que garantam sua confiabilidade e alinhamento com a realidade operacional. Ao integrar técnicas de \textit{Chain of Thought} \cite{1b6e810ce0afd0dd093f789d2b2742d047e316d5} e processos de \textit{Active Learning}, o sistema proposto será capaz de identificar ambiguidades e solicitar ativamente o *feedback* do engenheiro humano, transformando o processo de modelagem em um diálogo colaborativo e iterativo. Isso se alinha diretamente com a área de "Aprendizagem de Máquina Explicável e Otimização em Engenharia", promovendo soluções que são transparentes, auditáveis e robustas.
+
+% ============================================
+% OBJETIVOS
+% ============================================
 % ============================================
 % OBJETIVOS
 % ============================================
@@ -89,15 +98,15 @@
 
 \subsection{Objetivo Geral}
 
-% Objetivo geral será inserido aqui
+Desenvolver um arcabouço computacional baseado em Sistemas Multi-Agentes (MAS) onde agentes cognitivos colaborativos atuam no refino iterativo de modelos de decisão para engenharia. O sistema deve interagir em linguagem natural com o operador humano, capturando restrições tácitas e validando a viabilidade técnica das soluções propostas através de um processo de crítica e formulação automatizada.
 
 \subsection{Objetivos Específicos}
 
 \begin{itemize}
-    \item Objetivo específico 1
-    \item Objetivo específico 2
-    \item Objetivo específico 3
-    % Adicionar mais objetivos conforme necessário
+    \item \textbf{Desenvolver um Agente Formulador:} Projetar e implementar um agente baseado em LLM capaz de traduzir descrições de problemas em linguagem natural para representações formais de otimização (e.g., código Python/Pyomo ou formulações matemáticas).
+    \item \textbf{Implementar um Agente Crítico:} Criar um agente especializado na verificação de consistência e viabilidade, utilizando regras de engenharia pré-definidas e feedback de solvers externos para identificar falhas ou alucinações na formulação inicial.
+    \item \textbf{Integrar Mecanismo de Aprendizado Ativo:} Desenvolver um módulo de \textit{Active Learning} que permita ao sistema detectar ambiguidades na especificação do problema e formular perguntas estratégicas ao usuário humano para elucidar restrições ocultas.
+    \item \textbf{Validar em Estudo de Caso de Energia:} Aplicar e avaliar o sistema proposto em um cenário realista do setor elétrico, como o planejamento da expansão da transmissão ou a operação energética, comparando a eficácia da modelagem assistida por agentes com abordagens manuais tradicionais.
 \end{itemize}
 
 % ============================================
@@ -131,8 +140,32 @@
 % ou arquivo .bib com \bibliography{}
 
 \begin{thebibliography}{99}
-    % Exemplo de referência
-    % \bibitem{ref1} Autor, A. (Ano). \textit{Título do Trabalho}. Local: Editora.
+    
+    \bibitem{bbe2f0a73e8bac09457ea17d3b6276dc97f170df}
+    Li, B., Mellou, K., Zhang, B., Pathuri, J., Menache, I. (2023). 
+    \textit{Large Language Models for Supply Chain Optimization}. 
+    ArXiv abs/2307.03875.
+
+    \bibitem{f8a2dca1e8fe56e698984c077f7ff58d8ca867e9}
+    Yang, C., Wang, X., Lu, Y., Liu, H., Le, Q. V., Zhou, D., Chen, X. (2023). 
+    \textit{Large Language Models as Optimizers}. 
+    ArXiv abs/2309.03409.
+
+    \bibitem{1b6e810ce0afd0dd093f789d2b2742d047e316d5}
+    Wei, J., Wang, X., Schuurmans, D., Bosma, M., Chi, E. H., Xia, F., ... \& Zhou, D. (2022). 
+    \textit{Chain of Thought Prompting Elicits Reasoning in Large Language Models}. 
+    ArXiv abs/2201.11903.
+
+    \bibitem{1c259361caa85c2d95a7d04e5e42fa98693da85b}
+    Liu, S., Chen, C., Qu, X., Tang, K., Ong, Y. (2023). 
+    \textit{Large Language Models as Evolutionary Optimizers}. 
+    IEEE Congress on Evolutionary Computation (CEC).
+
+    \bibitem{2fe6060ced80c1c245a718e6188b6516207bf0a8}
+    Ramamonjison, R., Li, H., Yu, T. T. L., He, S., Rengan, V., Banitalebi-Dehkordi, A., ... \& Zhang, Y. (2022). 
+    \textit{Augmenting Operations Research with Auto-Formulation of Optimization Models from Problem Descriptions}. 
+    ArXiv abs/2209.15565.
+
 \end{thebibliography}
 
 \end{document}
