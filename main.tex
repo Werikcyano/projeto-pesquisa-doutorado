@@ -181,10 +181,9 @@ A fundamentação teórica desta pesquisa perpassa pela convergência entre o pr
 
 \subsection{Evolução dos Modelos de Linguagem e Raciocínio Estruturado}
 
-O desenvolvimento da arquitetura Transformer consolidou um marco na computação ao introduzir mecanismos de atenção que permitem o processamento paralelo de sequências textuais \citep{204e3073870fae3d05bcbc2f6a8e263d9b72e776}. Diferente das arquiteturas recorrentes precedentes, o Transformer baseia-se no mecanismo de \textit{Scaled Dot-Product Attention}, definido matematicamente como:
-
+O desenvolvimento da arquitetura Transformer consolidou um marco na computação ao introduzir mecanismos de atenção que permitem o processamento paralelo de sequências textuais \citep{204e3073870fae3d05bcbc2f6a8e263d9b72e776}. Diferente das arquiteturas recorrentes precedentes, o Transformer baseia-se no mecanismo de \textit{Scaled Dot-Product Attention}, definido matematicamente por
 \begin{equation}
-\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V,
 \end{equation}
 
 onde $Q$, $K$ e $V$ representam as matrizes de \textit{queries}, \textit{keys} e \textit{values}, respectivamente, e $d_k$ é a dimensão das chaves. Essa inovação possibilitou o surgimento de modelos com bilhões de parâmetros, como o GPT-3, que demonstram capacidades de aprendizado \textit{few-shot} sem a necessidade de ajuste fino extensivo \citep{90abbc2cf38462b954ae1b772fac9532e2ccd8b0}. 
@@ -334,7 +333,7 @@ A metodologia proposta para a execução desta pesquisa estrutura-se em fases in
 O arcabouço computacional proposto fundamenta-se em uma arquitetura de Sistemas Multi-Agentes (MAS), projetada para operar em um ciclo fechado de formulação, crítica e autoajuste. A estrutura central é composta por dois agentes cognitivos principais que interagem entre si e com ferramentas externas de otimização, conforme detalhado a seguir:
 
 \begin{itemize}
-    \item \textbf{Agente Formulador (AF):} Este agente, baseado em modelos de linguagem de última geração, tem a função primordial de realizar o mapeamento semântico entre os requisitos expressos em linguagem natural e a sintaxe de linguagens de modelagem algébrica. O objetivo é traduzir a intenção do usuário para uma formulação matemática padrão na forma:
+    \item \textbf{Agente Formulador (AF):} Este agente, baseado em modelos de linguagem de última geração, tem a função primordial de realizar o mapeamento semântico entre os requisitos expressos em linguagem natural e a sintaxe de linguagens de modelagem algébrica. O objetivo é traduzir a intenção do usuário para uma formulação matemática padrão dada por
     
     \begin{equation}
         \begin{aligned}
@@ -343,7 +342,7 @@ O arcabouço computacional proposto fundamenta-se em uma arquitetura de Sistemas
             & \text{s.a.}
             & & g_i(x) \leq 0, \quad i = 1, \dots, m \\
             & & & h_j(x) = 0, \quad j = 1, \dots, p \\
-            & & & x \in \mathcal{X}
+            & & & x \in \mathcal{X}.
         \end{aligned}
     \end{equation}
 
