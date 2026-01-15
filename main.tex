@@ -12,9 +12,13 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
-\usepackage{cite} % Citações ABNT
+\usepackage[numbers]{natbib} % Citações numéricas (estilo comum em engenharia)
 \usepackage{url}
 \usepackage{hyperref}
+\usepackage{tabularx} % Para tabelas melhores
+\usepackage{booktabs} % Para linhas de tabelas profissionais
+\usepackage{tikz} % Para esquemáticos se necessário
+\usetikzlibrary{shapes,arrows,positioning}
 
 % Configurações de página
 \geometry{
@@ -80,17 +84,14 @@
 % ============================================
 \section{Introdução e Justificativa}
 
-A tomada de decisão em engenharia, especialmente em setores críticos como o de energia, envolve a resolução de problemas de otimização complexos sob incerteza. Tradicionalmente, a formulação desses modelos matemáticos exige um profundo conhecimento técnico, criando uma barreira entre os especialistas de domínio (engenheiros) e as ferramentas de otimização. Além disso, uma parte significativa do conhecimento necessário para uma modelagem robusta é tácita — regras não escritas, intuições baseadas em experiência e restrições operacionais sutis que raramente são capturadas em especificações iniciais.
+A complexidade inerente aos sistemas de engenharia contemporâneos, particularmente no âmbito do setor elétrico e de energia, demanda o emprego de modelos de otimização sofisticados para subsidiar processos decisórios sob condições de incerteza. Tradicionalmente, a transposição de requisitos operacionais para formulações matemáticas rigorosas constitui uma atividade de alta especialização técnica. Observa-se, com frequência, uma dissociação entre o conhecimento prático dos engenheiros de domínio e a formalização necessária para a utilização de ferramentas de pesquisa operatória. Tal cenário é agravado pelo fato de que parcela significativa das restrições fundamentais para a integridade dos sistemas é de natureza tácita, fundamentada na experiência empírica dos especialistas e raramente explicitada em documentos de requisitos formais.
 
-O advento dos Modelos de Linguagem de Grande Escala (LLMs) introduziu novas possibilidades para a automação dessa modelagem. Trabalhos recentes, como o \textit{OptiGuide} \cite{bbe2f0a73e8bac09457ea17d3b6276dc97f170df}, demonstram como LLMs podem atuar como intérpretes entre a linguagem natural e solvers de otimização, aumentando a interpretabilidade e acessibilidade. Da mesma forma, Yang et al. \cite{f8a2dca1e8fe56e698984c077f7ff58d8ca867e9} exploram o uso de LLMs diretamente como otimizadores. No entanto, a aplicação direta dessas ferramentas em cenários de engenharia crítica enfrenta desafios substanciais: a tendência dos modelos a alucinações, a geração de código sintaticamente correto mas semanticamente inviável, e a dificuldade em validar o modelo gerado contra normas de segurança estritas.
+A ascensão dos Modelos de Linguagem de Grande Escala (LLMs) propiciou avanços notáveis na automação da modelagem matemática. Propostas recentes evidenciam a capacidade dessas ferramentas em atuar como interfaces entre a linguagem natural e solvers de otimização, promovendo ganhos em interpretabilidade e agilidade \citep{bbe2f0a73e8bac09457ea17d3b6276dc97f170df}. Adicionalmente, investigações sobre o uso de LLMs como mecanismos de otimização direta demonstram potencial para a exploração de espaços de solução complexos \citep{f8a2dca1e8fe56e698984c077f7ff58d8ca867e9}. Contudo, a aplicação dessas tecnologias em ambientes de engenharia crítica permanece limitada por desafios estruturais, notadamente a propensão à geração de informações factualmente incorretas e a dificuldade de validação semântica frente a protocolos de segurança rigorosos.
 
-A presente proposta de doutorado busca mitigar essas limitações através de uma abordagem \textit{Human-in-the-loop} suportada por um sistema de Agentes Cognitivos Colaborativos. Propõe-se uma arquitetura onde um agente "Formulador" é responsável pela criação inicial do modelo, enquanto um agente "Crítico" — equipado com ferramentas de verificação e bases de conhecimento de engenharia — atua para validar, refutar e refinar iterativamente as propostas.
+A presente investigação propõe a superação de tais obstáculos por meio de uma arquitetura baseada em Sistemas Multi-Agentes (MAS) fundamentada na colaboração entre agentes cognitivos e o especialista humano. A abordagem visa estabelecer um fluxo de refinamento iterativo onde um agente formulador propõe modelos iniciais, enquanto um agente crítico, dotado de bases de conhecimento técnico e ferramentas de verificação formal, atua na identificação de inconsistências e alucinações. 
 
-A justificativa para esta pesquisa reside na necessidade premente de ferramentas que não apenas automatizem a criação de modelos, mas que garantam sua confiabilidade e alinhamento com a realidade operacional. Ao integrar técnicas de \textit{Chain of Thought} \cite{1b6e810ce0afd0dd093f789d2b2742d047e316d5} e processos de \textit{Active Learning}, o sistema proposto será capaz de identificar ambiguidades e solicitar ativamente o *feedback* do engenheiro humano, transformando o processo de modelagem em um diálogo colaborativo e iterativo. Isso se alinha diretamente com a área de "Aprendizagem de Máquina Explicável e Otimização em Engenharia", promovendo soluções que são transparentes, auditáveis e robustas.
+A justificativa para este trabalho fundamenta-se na necessidade de prover soluções que integrem a automação da modelagem com garantias de confiabilidade e transparência. Ao incorporar metodologias de raciocínio estruturado \citep{1b6e810ce0afd0dd093f789d2b2742d047e316d5} e mecanismos de aprendizado ativo, o arcabouço proposto busca capturar o conhecimento tácito dos engenheiros, transformando a modelagem em um processo de cocriação assistida. Tal proposta alinha-se aos objetivos do programa de pesquisa ao buscar o desenvolvimento de arquiteturas híbridas que priorizem a interpretabilidade e a robustez em sistemas de missão crítica.
 
-% ============================================
-% OBJETIVOS
-% ============================================
 % ============================================
 % OBJETIVOS
 % ============================================
@@ -98,15 +99,15 @@ A justificativa para esta pesquisa reside na necessidade premente de ferramentas
 
 \subsection{Objetivo Geral}
 
-Desenvolver um arcabouço computacional baseado em Sistemas Multi-Agentes (MAS) onde agentes cognitivos colaborativos atuam no refino iterativo de modelos de decisão para engenharia. O sistema deve interagir em linguagem natural com o operador humano, capturando restrições tácitas e validando a viabilidade técnica das soluções propostas através de um processo de crítica e formulação automatizada.
+O objetivo primordial desta pesquisa consiste no desenvolvimento e na avaliação de um arcabouço computacional baseado em agentes cognitivos colaborativos voltado ao refinamento iterativo de modelos de decisão em engenharia. O sistema deve possibilitar a captura de restrições operacionais complexas por meio de interação em linguagem natural, assegurando a viabilidade técnica e a transparência das formulações resultantes.
 
 \subsection{Objetivos Específicos}
 
 \begin{itemize}
-    \item \textbf{Desenvolver um Agente Formulador:} Projetar e implementar um agente baseado em LLM capaz de traduzir descrições de problemas em linguagem natural para representações formais de otimização (e.g., código Python/Pyomo ou formulações matemáticas).
-    \item \textbf{Implementar um Agente Crítico:} Criar um agente especializado na verificação de consistência e viabilidade, utilizando regras de engenharia pré-definidas e feedback de solvers externos para identificar falhas ou alucinações na formulação inicial.
-    \item \textbf{Integrar Mecanismo de Aprendizado Ativo:} Desenvolver um módulo de \textit{Active Learning} que permita ao sistema detectar ambiguidades na especificação do problema e formular perguntas estratégicas ao usuário humano para elucidar restrições ocultas.
-    \item \textbf{Validar em Estudo de Caso de Energia:} Aplicar e avaliar o sistema proposto em um cenário realista do setor elétrico, como o planejamento da expansão da transmissão ou a operação energética, comparando a eficácia da modelagem assistida por agentes com abordagens manuais tradicionais.
+    \item Projetar um Agente Formulador fundamentado em modelos de linguagem avançados para a conversão de descrições informais em representações matemáticas formais e código executável para solvers de otimização.
+    \item Implementar um Agente Crítico especializado na auditoria de modelos, utilizando heurísticas de engenharia e retroalimentação de solvers para mitigar a ocorrência de alucinações semânticas.
+    \item Desenvolver um protocolo de Aprendizado Ativo que identifique ambiguidades nas especificações e interpele o especialista humano para a elucidação de restrições implícitas.
+    \item Validar a eficácia da arquitetura proposta por meio de estudos de caso aplicados ao planejamento e operação de sistemas de energia elétrica, comparando-a com métodos convencionais de modelagem.
 \end{itemize}
 
 % ============================================
@@ -114,58 +115,95 @@ Desenvolver um arcabouço computacional baseado em Sistemas Multi-Agentes (MAS) 
 % ============================================
 \section{Referencial Teórico}
 
-% Conteúdo do referencial teórico será inserido aqui
+A fundamentação teórica desta pesquisa perpassa pela convergência entre o processamento de linguagem natural e a pesquisa operacional, com ênfase na utilização de modelos generativos para a solução de problemas complexos de engenharia.
+
+\subsection{Evolução dos Modelos de Linguagem e Raciocínio Estruturado}
+
+O desenvolvimento da arquitetura Transformer consolidou um marco na computação ao introduzir mecanismos de atenção que permitem o processamento paralelo de sequências textuais \citep{204e3073870fae3d05bcbc2f6a8e263d9b72e776}. Essa inovação possibilitou o surgimento de modelos com bilhões de parâmetros, capazes de realizar tarefas com mínima necessidade de ajuste fino \citep{90abbc2cf38462b954ae1b772fac9532e2ccd8b0}. Subsequentemente, a introdução de técnicas de estímulo ao raciocínio em etapas, conhecidas como \textit{Chain of Thought}, permitiu que esses modelos decompusessem problemas lógicos complexos em sequências de passos intermediários, elevando significativamente o desempenho em tarefas de inferência e resolução de problemas matemáticos \citep{1b6e810ce0afd0dd093f789d2b2742d047e316d5}.
+
+\subsection{Integração de LLMs na Pesquisa Operacional}
+
+A aplicação de LLMs no domínio da otimização tem evoluído da simples tradução de texto para código em direção à atuação direta como otimizadores. Metodologias baseadas em \textit{Optimization by PROmpting} (OPRO) demonstram que modelos de linguagem podem gerar e refinar soluções para problemas clássicos, como o caixeiro viajante, ao analisar o histórico de desempenhos anteriores inseridos no contexto do prompt \citep{f8a2dca1e8fe56e698984c077f7ff58d8ca867e9}. 
+
+Paralelamente, abordagens que integram algoritmos evolutivos com LLMs, tais como a \textit{Evolution of Heuristics} (EoH) e a \textit{Reflective Evolution} (ReEvo), utilizam a capacidade generativa para conceber novas heurísticas de busca, superando em eficiência métodos projetados manualmente por especialistas \citep{be7a88babf78512b545f585517704cb597388cbc}. Tais avanços evidenciam a viabilidade de sistemas autônomos que não apenas formulam o problema, mas também aprimoram as estratégias de busca de solução.
+
+\subsection{Sistemas de Diálogo e Interpretabilidade em Engenharia}
+
+A aceitação de sistemas baseados em inteligência artificial no ambiente industrial depende intrinsecamente da capacidade de fornecer justificativas compreensíveis para as decisões propostas. Iniciativas como o \textit{OptiChat} e o \textit{OptiMind} focam na criação de sistemas de diálogo que permitem a profissionais sem especialização em otimização interagir com modelos complexos, diagnosticar inviabilidades e realizar análises de sensibilidade em linguagem natural \citep{04eb39fb141f058081036a3c65610c59cd781792, 92b39ce69cc1ee59aff8a92f30557728edc6ea32}. A integração de bibliotecas de experiência, como proposto pelo sistema \textit{AlphaOPT}, fortalece essa tendência ao permitir que o sistema aprenda com sucessos e falhas anteriores, construindo uma base de conhecimento técnico que reduz a incidência de erros semânticos \citep{6f99bcc23e8308650dae64970980bdeae2a4f9d2}.
 
 % ============================================
 % METODOLOGIA
 % ============================================
 \section{Metodologia}
 
-% Conteúdo da metodologia será inserido aqui
+A metodologia proposta para a execução desta pesquisa estrutura-se em fases incrementais, fundamentadas no desenvolvimento e na validação de um sistema multi-agente para suporte à decisão em problemas de engenharia crítica.
+
+\subsection{Arquitetura do Sistema de Agentes Colaborativos}
+
+O arcabouço computacional será composto por dois agentes principais que interagem em um ambiente de refinamento iterativo. O Agente Formulador terá a responsabilidade de interpretar as descrições em linguagem natural fornecidas pelo usuário e convertê-las em modelos de otimização estruturados. Para tal, serão utilizadas técnicas de engenharia de prompt avançadas para garantir a correta definição de variáveis de decisão, funções objetivo e restrições.
+
+O Agente Crítico atuará como um mecanismo de verificação semântica. Esse agente será equipado com uma base de conhecimento técnico específica do setor elétrico e ferramentas de execução de código para validar a sintaxe e a lógica do modelo proposto. Caso sejam detectadas inconsistências ou falhas de viabilidade reportadas pelos solvers de otimização, o Agente Crítico gerará relatórios de erro em linguagem natural para que o Agente Formulador realize os ajustes necessários.
+
+\subsection{Fluxo de Interação Human-in-the-Loop}
+
+A interação com o especialista humano ocorrerá por meio de um módulo de aprendizado ativo. Quando o sistema identificar ambiguidades que impeçam a formalização precisa do problema, interpelará o usuário com questões estruturadas para elucidar o conhecimento tácito. O processo iterativo de crítica e formulação será mantido até que um modelo viável e validado seja obtido. A Figura \ref{fig:fluxo_agentes} ilustra o fluxo de informações proposto para a arquitetura do sistema.
+
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}[node distance=2cm, auto]
+        \tikzstyle{block} = [rectangle, draw, fill=blue!10, text width=5em, text centered, rounded corners, minimum height=4em]
+        \tikzstyle{cloud} = [ellipse, draw, fill=red!10, node distance=3cm, minimum height=2em]
+        \tikzstyle{line} = [draw, -latex']
+        
+        \node [cloud] (user) {Engenheiro};
+        \node [block, right of=user, node distance=4cm] (form) {Agente Formulador};
+        \node [block, below of=form, node distance=3cm] (crit) {Agente Crítico};
+        \node [block, left of=crit, node distance=4cm] (solv) {Solvers (Gurobi)};
+        
+        \path [line] (user) -- node {Requisitos} (form);
+        \path [line] (form) -- node {Modelo} (crit);
+        \path [line] (crit) -- node {Verificação} (solv);
+        \path [line] (solv) -- node {Feedback} (crit);
+        \path [line] (crit) -- node {Refinamento} (form);
+        \path [line] (crit) -- node {Resultados} (user);
+    \end{tikzpicture}
+    \caption{Fluxograma simplificado da interação entre os agentes cognitivos e o especialista de domínio.}
+    \label{fig:fluxo_agentes}
+\end{figure}
+
+\subsection{Cenário de Aplicação e Validação Experimental}
+
+A validação do sistema proposto será realizada por meio de estudos de caso aplicados a problemas reais do setor elétrico brasileiro, como o planejamento da expansão de sistemas de transmissão ou a otimização do despacho de geração renovável. Serão utilizadas ferramentas de modelagem como Pyomo e solvers comerciais de alto desempenho, tais como Gurobi e CPLEX. O desempenho do sistema será avaliado com base na taxa de sucesso na geração de modelos viáveis, no tempo de convergência para o modelo final e na percepção de transparência e confiabilidade reportada por especialistas da área.
 
 % ============================================
 % CRONOGRAMA
 % ============================================
 \section{Cronograma}
 
-% Cronograma será inserido aqui
-% Sugestão: usar tabela ou ambiente itemize
+O projeto de pesquisa será desenvolvido ao longo de um período de 48 meses, organizado em oito semestres letivos. O planejamento das atividades prioriza o cumprimento dos créditos obrigatórios e a revisão bibliográfica inicial, seguidos pelas etapas de desenvolvimento, experimentação e redação da tese.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabularx}{\textwidth}{|X|c|c|c|c|c|c|c|c|}
+\hline
+\textbf{Atividades / Semestre} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} \\ \hline
+Créditos em Disciplinas e Revisão Bibliográfica & X & X & X & & & & & \\ \hline
+Concepção e Projeto da Arquitetura Multi-Agente & & X & X & & & & & \\ \hline
+Desenvolvimento dos Agentes Formulador e Crítico & & & X & X & X & & & \\ \hline
+Integração de Módulos de Aprendizado Ativo & & & & X & X & & & \\ \hline
+Exame de Qualificação & & & & & X & & & \\ \hline
+Realização de Experimentos e Validação & & & & & X & X & X & \\ \hline
+Análise de Resultados e Publicações & & & & X & X & X & X & \\ \hline
+Redação e Defesa da Tese & & & & & & & X & X \\ \hline
+\end{tabularx}
+\caption{Cronograma de execução das atividades de doutorado previstas para o período 2026-2030.}
+\end{table}
 
 % ============================================
 % REFERÊNCIAS
 % ============================================
-\section{Referências}
-
-% Referências serão inseridas aqui usando \cite{} e ambiente thebibliography
-% ou arquivo .bib com \bibliography{}
-
-\begin{thebibliography}{99}
-    
-    \bibitem{bbe2f0a73e8bac09457ea17d3b6276dc97f170df}
-    Li, B., Mellou, K., Zhang, B., Pathuri, J., Menache, I. (2023). 
-    \textit{Large Language Models for Supply Chain Optimization}. 
-    ArXiv abs/2307.03875.
-
-    \bibitem{f8a2dca1e8fe56e698984c077f7ff58d8ca867e9}
-    Yang, C., Wang, X., Lu, Y., Liu, H., Le, Q. V., Zhou, D., Chen, X. (2023). 
-    \textit{Large Language Models as Optimizers}. 
-    ArXiv abs/2309.03409.
-
-    \bibitem{1b6e810ce0afd0dd093f789d2b2742d047e316d5}
-    Wei, J., Wang, X., Schuurmans, D., Bosma, M., Chi, E. H., Xia, F., ... \& Zhou, D. (2022). 
-    \textit{Chain of Thought Prompting Elicits Reasoning in Large Language Models}. 
-    ArXiv abs/2201.11903.
-
-    \bibitem{1c259361caa85c2d95a7d04e5e42fa98693da85b}
-    Liu, S., Chen, C., Qu, X., Tang, K., Ong, Y. (2023). 
-    \textit{Large Language Models as Evolutionary Optimizers}. 
-    IEEE Congress on Evolutionary Computation (CEC).
-
-    \bibitem{2fe6060ced80c1c245a718e6188b6516207bf0a8}
-    Ramamonjison, R., Li, H., Yu, T. T. L., He, S., Rengan, V., Banitalebi-Dehkordi, A., ... \& Zhang, Y. (2022). 
-    \textit{Augmenting Operations Research with Auto-Formulation of Optimization Models from Problem Descriptions}. 
-    ArXiv abs/2209.15565.
-
-\end{thebibliography}
+\bibliographystyle{plainnat}
+\bibliography{references}
 
 \end{document}
