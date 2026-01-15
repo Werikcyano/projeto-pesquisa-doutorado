@@ -189,11 +189,77 @@ O desenvolvimento da arquitetura Transformer consolidou um marco na computação
 
 onde $Q$, $K$ e $V$ representam as matrizes de \textit{queries}, \textit{keys} e \textit{values}, respectivamente, e $d_k$ é a dimensão das chaves. Essa inovação possibilitou o surgimento de modelos com bilhões de parâmetros, como o GPT-3, que demonstram capacidades de aprendizado \textit{few-shot} sem a necessidade de ajuste fino extensivo \citep{90abbc2cf38462b954ae1b772fac9532e2ccd8b0}. 
 
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}[
+        node distance=1.5cm,
+        auto,
+        every node/.style={font=\scriptsize},
+        layer/.style={rectangle, draw, fill=blue!5, text width=2.5cm, align=center, minimum height=0.8cm, rounded corners},
+        arrow/.style={-latex', thick}
+    ]
+        % Fluxo Simplificado Transformer
+        \node (input) {Input Embedding};
+        \node[layer, above=0.5cm of input] (att) {Multi-Head Attn};
+        \node[layer, above=0.5cm of att] (norm) {Add \& Norm};
+        \node[layer, above=0.5cm of norm] (ffn) {Feed Forward};
+        \node[layer, above=0.5cm of ffn] (norm2) {Add \& Norm};
+        \node[above=0.5cm of norm2] (output) {Output Probabilities};
+        
+        % Conexões
+        \draw[arrow] (input) -- (att);
+        \draw[arrow] (att) -- (norm);
+        \draw[arrow] (norm) -- (ffn);
+        \draw[arrow] (ffn) -- (norm2);
+        \draw[arrow] (norm2) -- (output);
+        
+        % Residual connections (simbólico)
+        \draw[arrow, dashed, ->] (input.west) to[bend left=45] (norm.west);
+        \draw[arrow, dashed, ->] (norm.west) to[bend left=45] (norm2.west);
+
+        \node[right=0.5cm of ffn, text width=4cm, align=left] {
+            \textbf{Mecanismo de Atenção}:\\
+            Permite o processamento paralelo e captura de dependências de longo alcance.
+        };
+    \end{tikzpicture}
+    \caption{Representação simplificada de um bloco Transformer, destacando o mecanismo de atenção que permite o processamento paralelo eficiente, base para modelos como GPT.}
+    \label{fig:transformer_block}
+\end{figure}
+
 Subsequentemente, a introdução de técnicas de estímulo ao raciocínio em etapas, conhecidas como \textit{Chain of Thought} (CoT), permitiu que esses modelos decompusessem problemas lógicos complexos em sequências de passos intermediários. Pesquisas indicam que a habilidade de raciocínio emerge naturalmente em modelos de grande escala quando instigados por demonstrações de pensamento estruturado \citep{1b6e810ce0afd0dd093f789d2b2742d047e316d5}. Tal avanço é fundamental para a transposição de requisitos de engenharia, que frequentemente exigem múltiplas etapas de dedução lógica antes da formalização matemática final.
 
 \subsection{Integração de LLMs na Pesquisa Operacional}
 
 A aplicação de LLMs no domínio da otimização tem evoluído da simples tradução de texto para código em direção à atuação direta como otimizadores. Metodologias baseadas em \textit{Optimization by PROmpting} (OPRO) utilizam o modelo de linguagem para gerar e refinar soluções iterativamente, integrando no contexto do \textit{prompt} o histórico de soluções anteriores e seus respectivos desempenhos \citep{f8a2dca1e8fe56e698984c077f7ff58d8ca867e9}. O processo pode ser resumido pela geração de uma nova solução $x_{t+1}$ baseada em um \textit{meta-prompt} $P_t$ que contém os pares $\{(x_i, f(x_i))\}_{i=1}^t$.
+
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}[
+        node distance=2.5cm,
+        auto,
+        every node/.style={font=\scriptsize},
+        proc/.style={rectangle, draw, fill=red!5, text width=2cm, align=center, minimum height=1cm, rounded corners},
+        data/.style={trapezium, draw, fill=yellow!10, text width=1.5cm, align=center, trapezium left angle=70, trapezium right angle=110},
+        arrow/.style={-latex', thick}
+    ]
+        % Ciclo OPRO
+        \node[proc] (llm) {LLM Optimizer};
+        \node[data, right=1.5cm of llm] (sol) {Solução ($x_t$)};
+        \node[proc, below=1.5cm of sol] (eval) {Avaliador ($f(x)$)};
+        \node[data, left=1.5cm of eval] (hist) {Histórico ($x_i, y_i$)};
+        
+        % Fluxo
+        \draw[arrow] (llm) -- node[midway, above] {Gera} (sol);
+        \draw[arrow] (sol) -- (eval);
+        \draw[arrow] (eval) -- node[midway, below] {Score} (hist);
+        \draw[arrow] (hist) -- node[midway, left] {Meta-Prompt} (llm);
+        
+        \node[above=0.2cm of llm] {\textbf{Optimization by Prompting}};
+
+    \end{tikzpicture}
+    \caption{Ciclo de otimização OPRO: O LLM gera soluções baseadas em um meta-prompt que contém o histórico de tentativas anteriores e suas avaliações, atuando como um algoritmo evolutivo guiado por linguagem.}
+    \label{fig:opro_cycle}
+\end{figure}
 
 Paralelamente, abordagens híbridas integram algoritmos evolutivos com o raciocínio semântico dos LLMs. O \textit{Reflective Evolution} (ReEvo) utiliza reflexões verbais como "gradientes linguísticos" para guiar a busca em espaços heurísticos, permitindo a evolução automática de algoritmos de busca sem intervenção humana direta \citep{be7a88babf78512b545f585517704cb597388cbc}.
 
