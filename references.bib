@@ -9,6 +9,19 @@ doi = {10.48550/arXiv.2309.03409},
 arxivid = {2309.03409},
 }
 
+@article{3eee1fe6acf9760efa215130617a4f13d32b4962,
+title = {ORGEval: Graph-Theoretic Evaluation of LLMs in Optimization Modeling},
+year = {2025},
+url = {https://www.semanticscholar.org/paper/3eee1fe6acf9760efa215130617a4f13d32b4962},
+abstract = {Formulating optimization problems for industrial applications demands significant manual effort and domain expertise. While Large Language Models (LLMs) show promise in automating this process, evaluating their performance remains difficult due to the absence of robust metrics. Existing solver-based approaches often face inconsistency, infeasibility issues, and high computational costs. To address these issues, we propose ORGEval, a graph-theoretic evaluation framework for assessing LLMs'capabilities in formulating linear and mixed-integer linear programs. ORGEval represents optimization models as graphs, reducing equivalence detection to graph isomorphism testing. We identify and prove a sufficient condition, when the tested graphs are symmetric decomposable (SD), under which the Weisfeiler-Lehman (WL) test is guaranteed to correctly detect isomorphism. Building on this, ORGEval integrates a tailored variant of the WL-test with an SD detection algorithm to evaluate model equivalence. By focusing on structural equivalence rather than instance-level configurations, ORGEval is robust to numerical variations. Experimental results show that our method can successfully detect model equivalence and produce 100\% consistent results across random parameter configurations, while significantly outperforming solver-based methods in runtime, especially on difficult problems. Leveraging ORGEval, we construct the Bench4Opt dataset and benchmark state-of-the-art LLMs on optimization modeling. Our results reveal that although optimization modeling remains challenging for all LLMs, DeepSeek-V3 and Claude-Opus-4 achieve the highest accuracies under direct prompting, outperforming even leading reasoning models.},
+author = {Zhuohan Wang and Ziwei Zhu and Ziniu Li and Congliang Chen and Yizhou Han and Yufeng Lin and Zhihang Lin and Angyang Gu and Xinglin Hu and Ruoyu Sun and Tian Ding},
+journal = {ArXiv},
+volume = {abs/2510.27610},
+pages = {null},
+doi = {10.48550/arXiv.2510.27610},
+arxivid = {2510.27610},
+}
+
 @article{1b6e810ce0afd0dd093f789d2b2742d047e316d5,
 title = {Chain of Thought Prompting Elicits Reasoning in Large Language Models},
 year = {2022},
@@ -38,6 +51,19 @@ author = {Shengcai Liu and Caishun Chen and Xinghua Qu and Ke Tang and Y. Ong},
 journal = {2024 IEEE Congress on Evolutionary Computation (CEC)},
 doi = {10.1109/CEC60901.2024.10611913},
 arxivid = {2310.19046},
+}
+
+@article{074299c38fe2f099d970d92eafc592a6706035c6,
+title = {CALM Before the STORM: Unlocking Native Reasoning for Optimization Modeling},
+year = {2025},
+url = {https://www.semanticscholar.org/paper/074299c38fe2f099d970d92eafc592a6706035c6},
+abstract = {Large Reasoning Models (LRMs) have demonstrated strong capabilities in complex multi-step reasoning, opening new opportunities for automating optimization modeling. However, existing domain adaptation methods, originally designed for earlier instruction-tuned models, often fail to exploit the advanced reasoning patterns of modern LRMs -- In particular, we show that direct fine-tuning on traditional \textit{non-reflective} datasets leads to limited gains. To fully leverage LRMs'inherent reasoning abilities, we propose \textbf{CALM} (\textit{Corrective Adaptation with Lightweight Modification}), a framework that progressively refines LRMs within their native reasoning modes for optimization modeling tasks. In CALM, an expert intervener identifies reasoning flaws and provides concise corrective hints, which the LRM incorporates to produce improved reasoning trajectories. These interventions modify fewer than 2.6\% of generated tokens, but generate high-quality data for soft adaptation through supervised fine-tuning. The adapted model is then further improved through reinforcement learning. Building on CALM, we develop \textbf{STORM} (\textit{Smart Thinking Optimization Reasoning Model}), a 4B-parameter LRM that achieves a new state-of-the-art average accuracy of 68.9\% across five popular optimization modeling benchmarks, matching the performance of a 671B LRM. These results demonstrate that dynamic, hint-based data synthesis both preserves and amplifies the native reasoning patterns of modern LRMs, offering a more effective and scalable path towards expert-level performance on challenging optimization modeling tasks.},
+author = {Zhengyang Tang and Zihan Ye and Chenyu Huang and Xuhan Huang and Chengpeng Li and Sihang Li and Guanhua Chen and Ming Yan and Zizhuo Wang and Hongyuan Zha and Dayiheng Liu and Benyou Wang},
+journal = {ArXiv},
+volume = {abs/2510.04204},
+pages = {null},
+doi = {10.48550/arXiv.2510.04204},
+arxivid = {2510.04204},
 }
 
 @article{2fe6060ced80c1c245a718e6188b6516207bf0a8,
@@ -102,3 +128,4 @@ volume = {abs/2501.08406},
 doi = {10.48550/arXiv.2501.08406},
 arxivid = {2501.08406},
 }
+
