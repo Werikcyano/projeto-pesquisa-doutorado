@@ -363,24 +363,53 @@ Inspirado na arquitetura do \textit{OptiChat} \citep{04eb39fb141f058081036a3c656
 
 \begin{figure}[ht]
     \centering
-    \begin{tikzpicture}[node distance=2cm, auto]
-        \tikzstyle{block} = [rectangle, draw, fill=blue!10, text width=5em, text centered, rounded corners, minimum height=4em]
-        \tikzstyle{cloud} = [ellipse, draw, fill=red!10, node distance=3cm, minimum height=2em]
-        \tikzstyle{line} = [draw, -latex']
+    \begin{tikzpicture}[
+        node distance=2.5cm,
+        auto,
+        every node/.style={font=\scriptsize},
+        human/.style={ellipse, draw=green!60!black, fill=green!5, thick, text width=2.5cm, align=center, minimum height=1.2cm},
+        agent/.style={rectangle, draw=blue!60!black, fill=blue!5, thick, text width=2.8cm, align=center, rounded corners, minimum height=1.5cm},
+        module/.style={rectangle, draw=orange!60!black, fill=orange!5, thick, text width=2.5cm, align=center, rounded corners, minimum height=1.2cm},
+        db/.style={cylinder, draw=purple!60!black, fill=purple!5, thick, shape border rotate=90, aspect=0.25, text width=2cm, align=center, minimum height=1.5cm},
+        arrow/.style={-latex, thick}
+    ]
+
+        % Nós Principais
+        \node[human] (eng) {\textbf{Engenheiro de Domínio}\\(Requisitos/Feedback)};
         
-        \node [cloud] (user) {Engenheiro};
-        \node [block, right of=user, node distance=4cm] (form) {Agente Formulador};
-        \node [block, below of=form, node distance=3cm] (crit) {Agente Crítico};
-        \node [block, left of=crit, node distance=4cm] (solv) {Solvers (Gurobi)};
+        \node[agent, right=2cm of eng] (form) {\textbf{Agente Formulador}\\(LLM + CoT)};
         
-        \path [line] (user) -- node {Requisitos} (form);
-        \path [line] (form) -- node {Modelo} (crit);
-        \path [line] (crit) -- node {Verificação} (solv);
-        \path [line] (solv) -- node {Feedback} (crit);
-        \path [line] (crit) -- node {Refinamento} (form);
-        \path [line] (crit) -- node {Resultados} (user);
+        \node[agent, below=2cm of form] (crit) {\textbf{Agente Crítico}\\(Verificação Semântica)};
+        
+        \node[module, left=2cm of crit] (solver) {\textbf{Solvers Externos}\\(Gurobi/CPLEX)};
+        
+        \node[module, above=1.5cm of form] (active) {\textbf{Módulo de}\\Active Learning};
+        
+        \node[db, right=1.5cm of crit] (mem) {\textbf{Biblioteca de}\\Experiência\\(Taxonomia de Erros)};
+
+        % Conexões - Fluxo Principal
+        \draw[arrow] (eng) -- node[midway, above] {Linguagem Natural} (form);
+        \draw[arrow] (form) -- node[midway, right] {Draft de Modelo} (crit);
+        \draw[arrow] (crit) -- node[midway, above] {Código} (solver);
+        \draw[arrow] (solver) -- node[midway, below] {Status/Log} (crit);
+        
+        % Loops de Refinamento
+        \draw[arrow, red!70!black, dashed] (crit.west) -- ++(-0.5,0) |- node[pos=0.25, left] {Correção ({OptiMind})} (form.west);
+        
+        % Active Learning (Ambiguidades)
+        \draw[arrow, orange!70!black] (form.north) -- (active.south);
+        \draw[arrow, orange!70!black] (active.west) -| node[pos=0.25, above] {Perguntas de Elucidação} (eng.north);
+        
+        % Memória (AlphaOPT)
+        \draw[arrow, purple!70!black] (mem) -- (crit);
+        \draw[arrow, purple!70!black] (mem) |- (form);
+        \draw[arrow, purple!70!black, dashed] (crit) -- (mem);
+
+        % Saída Final
+        \draw[arrow, green!60!black, double] (crit) -| node[pos=0.25, below] {Solução Explicável} (eng);
+
     \end{tikzpicture}
-    \caption{Fluxograma simplificado da interação entre os agentes cognitivos e o especialista de domínio.}
+    \caption{Fluxograma detalhado da arquitetura proposta. O fluxo integra (1) \textit{Active Learning} para resolução de ambiguidades, (2) Ciclo de refinamento entre Formulador e Crítico assistido por Solvers, e (3) Uma Biblioteca de Experiência persistente para aprendizado contínuo, inspirado em \citet{6f99bcc23e8308650dae64970980bdeae2a4f9d2} e \citet{074299c38fe2f099d970d92eafc592a6706035c6}.}
     \label{fig:fluxo_agentes}
 \end{figure}
 
