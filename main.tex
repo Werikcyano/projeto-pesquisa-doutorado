@@ -103,7 +103,7 @@ A ausência de mecanismos robustos de verificação que atuem em tempo de execu�
 \begin{figure}[ht]
     \centering
     \begin{tikzpicture}[
-        node distance=2.5cm, 
+        node distance=3cm, 
         auto,
         every node/.style={font=\footnotesize},
         block/.style={rectangle, draw, rounded corners, fill=blue!10, text width=2.8cm, align=center, minimum height=1.2cm},
@@ -113,8 +113,8 @@ A ausência de mecanismos robustos de verificação que atuem em tempo de execu�
 
         % Cenário Tradicional
         \node[human] (eng) {Engenheiro Especialista};
-        \node[block, right=2cm of eng] (manual) {Formulação Manual (Matemática/Código)};
-        \node[block, right=1.5cm of manual] (solver) {Solver de Otimização};
+        \node[block, right=2.5cm of eng] (manual) {Formulação Manual (Matemática/Código)};
+        \node[block, right=2cm of manual] (solver) {Solver de Otimização};
         
         % Labels
         \node[above=0.2cm of manual, font=\bfseries] {Abordagem Tradicional};
@@ -124,21 +124,24 @@ A ausência de mecanismos robustos de verificação que atuem em tempo de execu�
         \path[line, dashed] (solver) -- ++(0,-1.8) -| node[pos=0.25, below] {Erro/Feedback Manual} (eng);
 
         % Cenário Proposto (human-in-the-loop)
-        \node[human, below=4cm of eng] (eng2) {Engenheiro Especialista};
-        \node[block, right=2cm of eng2, fill=orange!10] (mas) {\textbf{Agentes Colaborativos} (Formulador + Crítico)};
-        \node[block, right=1.5cm of mas] (solver2) {Solver de Otimização};
+        \node[human, below=4.5cm of eng] (eng2) {Engenheiro Especialista};
+        \node[block, right=2.5cm of eng2, fill=orange!10] (mas) {\textbf{Agentes Colaborativos} (Formulador + Crítico)};
+        \node[block, right=2cm of mas] (solver2) {Solver de Otimização};
 
         % Labels
         \node[above=0.2cm of mas, font=\bfseries] {Abordagem Proposta};
 
-        % Ajustando setas e labels para não sobrepor
-        \path[line] (eng2) -- node[midway, above, align=center] {Linguagem\\Natural} (mas);
-        \path[line] (mas) -- node[midway, above] {Modelo} (solver2);
-        \path[line] (solver2) -- node[midway, below] {Viabilidade} (mas);
-        \path[line, dashed] (mas) -- node[midway, above, Sloped] {Refinamento} (eng2);
+        % Usando setas curvas para separar os fluxos e evitar sobreposição
+        % Fluxo Engenheiro <-> Agentes
+        \path[line] (eng2) edge[bend left=20] node[midway, above] {Linguagem Natural} (mas);
+        \path[line, dashed] (mas) edge[bend left=20] node[midway, below] {Refinamento} (eng2);
+
+        % Fluxo Agentes <-> Solver
+        \path[line] (mas) edge[bend left=20] node[midway, above] {Modelo} (solver2);
+        \path[line] (solver2) edge[bend left=20] node[midway, below] {Viabilidade} (mas);
 
     \end{tikzpicture}
-    \caption{Comparativo conceitual: (Superior) O fluxo tradicional exige que o engenheiro traduza manualmente requisitos em formalismo matemático. (Inferior) A abordagem proposta intercala agentes inteligentes que traduzem linguagem natural e validam tecnicamente o modelo antes da execução.}
+    \caption{Comparativo conceitual: (Superior) O fluxo tradicional exige tradução manual. (Inferior) A abordagem proposta utiliza agentes intermediários (setas curvas representam o fluxo contínuo de ida e volta).}
     \label{fig:comparativo_abordagens}
 \end{figure}
 
