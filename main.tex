@@ -158,15 +158,18 @@ Diferente de abordagens unilaterais, o sistema operará como uma biblioteca de e
 
 \subsection{Objetivo Geral}
 
-O objetivo primordial desta pesquisa consiste no desenvolvimento e na avaliação de um arcabouço computacional baseado em agentes cognitivos colaborativos voltado ao refinamento iterativo de modelos de decisão em engenharia. O sistema deve possibilitar a captura de restrições operacionais complexas por meio de interação em linguagem natural, assegurando a viabilidade técnica e a transparência das formulações resultantes.
+O objetivo central desta tese de doutorado consiste em conceber, implementar e validar um arcabouço computacional baseado em Sistemas Multi-Agentes (MAS) para o refinamento colaborativo de modelos de otimização em engenharia. A pesquisa visa estabelecer um paradigma de interação \textit{Human-in-the-loop} que possibilite a conversão de requisitos em linguagem natural para formulações matemáticas rigorosas, garantindo a transparência, a viabilidade técnica e a captura de restrições operacionais tácitas em sistemas de infraestrutura crítica.
 
 \subsection{Objetivos Específicos}
 
+Para a consecução do objetivo geral, estabelecem-se os seguintes objetivos específicos:
+
 \begin{itemize}
-    \item Projetar um Agente Formulador fundamentado em modelos de linguagem avançados para a conversão de descrições informais em representações matemáticas formais e código executável para solvers de otimização.
-    \item Implementar um Agente Crítico especializado na auditoria de modelos, utilizando heurísticas de engenharia e retroalimentação de solvers para mitigar a ocorrência de alucinações semânticas.
-    \item Desenvolver um protocolo de Aprendizado Ativo que identifique ambiguidades nas especificações e interpele o especialista humano para a elucidação de restrições implícitas.
-    \item Validar a eficácia da arquitetura proposta por meio de estudos de caso aplicados ao planejamento e operação de sistemas de energia elétrica, comparando-a com métodos convencionais de modelagem.
+    \item \textbf{Arquitetura de Formulação Cognitiva:} Investigar e desenvolver um Agente Formulador fundamentado em Modelos de Linguagem de Grande Escala (LLMs) capaz de realizar o mapeamento semântico entre descrições informais de problemas de engenharia e linguagens de modelagem algébrica (e.g., Pyomo, GAML).
+    \item \textbf{Mecanismo de Crítica e Verificação Semântica:} Projetar um Agente Crítico dotado de lógica de domínio específica para a auditoria automatizada de modelos, integrando retroalimentação de solvers de otimização para a identificação e correção de alucinações conceituais e inconsistências matemáticas.
+    \item \textbf{Protocolo de Aprendizado Ativo e Elucidação:} Desenvolver um módulo de Aprendizado Ativo (\textit{Active Learning}) orientado à detecção de ambiguidades na especificação inicial do problema, permitindo que o sistema interpele o especialista humano de forma estratégica para explicitar restrições e objetivos implícitos.
+    \item \textbf{Integração de Memória e Aprendizado Contínuo:} Implementar uma biblioteca de experiências e padrões de modelagem que permita ao sistema aprender com interações passadas, aumentando a robustez e a precisão das formulações em novos problemas de domínios correlatos.
+    \item \textbf{Validação em Engenharia de Energia:} Avaliar o desempenho do arcabouço proposto por meio de estudos de caso reais no planejamento e operação de sistemas elétricos, utilizando métricas de acurácia de modelagem, redução de tempo de desenvolvimento e índices de confiança do usuário final.
 \end{itemize}
 
 % ============================================
