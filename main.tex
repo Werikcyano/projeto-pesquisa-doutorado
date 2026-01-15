@@ -267,7 +267,54 @@ A robustez desse processo de modelagem é fortalecida pela criação de bibliote
 
 \subsection{Sistemas de Diálogo e Interpretabilidade em Engenharia}
 
-A aceitação de sistemas baseados em inteligência artificial no ambiente industrial depende intrinsecamente da transparência das decisões propostas. Iniciativas como o \textit{OptiChat} estabelecem sistemas de diálogo em linguagem natural que permitem a profissionais realizar diagnósticos de inviabilidade, análises de sensibilidade e explicações contrafatuais sem a necessidade de perícia em modelagem algébrica \citep{04eb39fb141f058081036a3c65610c59cd781792}. 
+A aceitação de sistemas baseados em inteligência artificial no ambiente industrial depende intrinsecamente da transparência das decisões propostas. Iniciativas como o \textit{OptiChat} estabelecem sistemas de diálogo em linguagem natural que permitem a profissionais realizar diagnósticos de inviabilidade, análises de sensibilidade e explicações contrafatuais sem a necessidade de perícia em modelagem algébrica \citep{04eb39fb141f058081036a3c65610c59cd781792}. A Figura \ref{fig:optichat_overview} ilustra a arquitetura deste sistema.
+
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}[
+        node distance=1.0cm,
+        auto,
+        every node/.style={font=\tiny},
+        input/.style={rectangle, draw=blue!50, fill=blue!5, text width=2cm, align=center, rounded corners, minimum height=0.8cm},
+        output/.style={rectangle, draw=green!50, fill=green!5, text width=2cm, align=center, rounded corners, minimum height=0.8cm},
+        core/.style={rectangle, draw=purple!50, fill=purple!5, text width=1.5cm, align=center, rounded corners, minimum height=1.5cm, font=\bfseries\scriptsize},
+        backend/.style={rectangle, draw=gray!80, thick, text width=2.2cm, align=center, rounded corners, minimum height=1cm},
+        group/.style={draw=gray!50, dashed, inner sep=0.2cm, rounded corners}
+    ]
+        % (a) User Interface
+        \node[core] (llm) {LLM};
+        
+        \node[input, left=1.0cm of llm, yshift=0.8cm] (agnostic) {Solution-agnostic\\Query};
+        \node[input, left=1.0cm of llm, yshift=-0.8cm] (specific) {Solution-specific\\Query};
+        
+        \node[output, right=1.0cm of llm, yshift=0.8cm] (qualitative) {Qualitative\\Explanation};
+        \node[output, right=1.0cm of llm, yshift=-0.8cm] (feedback) {Technical\\Feedback};
+        
+        % Conexões (a)
+        \draw[-latex, blue!50, thick] (agnostic.east) -- (llm.west);
+        \draw[-latex, blue!50, thick] (specific.east) -- (llm.west);
+        \draw[-latex, green!50, thick] (llm.east) -- (qualitative.west);
+        \draw[-latex, green!50, thick] (llm.east) -- (feedback.west);
+        
+        \node[above=1.5cm of llm, font=\bfseries\small] {(a) User Interface};
+
+        % (b) Backend
+        \node[below=1.5cm of llm] (interaction) {\textbf{Interaction}};
+        \draw[<->, thick] (llm) -- (interaction);
+
+        % Backend Tools
+        \node[backend, below=0.5cm of interaction] (funcs) {\textbf{Predefined Functions}\\Restore Feasibility\\Analyze Sensitivity};
+        \node[backend, below=0.2cm of funcs] (codegen) {\textbf{Code Generation}\\Counterfactual Expl.\\Unexpected Failure};
+        
+        \node[backend, left=0.5cm of funcs, text width=1.8cm, minimum height=2.5cm] (software) {\textbf{Modeling Software}\\(Model Code)};
+        \node[backend, right=0.5cm of funcs, text width=1.8cm, minimum height=2.5cm] (solver) {\textbf{Optimization Solver}\\(Description)};
+        
+        \node[yshift=0.5cm, font=\bfseries\small] at (funcs.north) {(b) Backend System};
+
+    \end{tikzpicture}
+    \caption{Visão geral do OptiChat. Entradas em azul (consultas), saídas em verde (explicações) e ferramentas de backend em cinza. Adaptado de \citet{04eb39fb141f058081036a3c65610c59cd781792}.}
+    \label{fig:optichat_overview}
+\end{figure} 
 
 O sistema \textit{OptiMind} avança essa fronteira ao integrar conhecimentos específicos da Pesquisa Operacional para guiar o LLM na formulação de modelos de programação linear inteira mista (MILP). Ao utilizar estratégias de inferência multi-turno e síntese de erros baseada em classes de problemas, o \textit{OptiMind} eleva a acurácia das formulações ao mitigar erros comuns de modelagem através de ciclos de retroalimentação entre o modelo e o \textit{solver} \citep{92b39ce69cc1ee59aff8a92f30557728edc6ea32}.
 
